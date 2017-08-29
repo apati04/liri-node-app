@@ -13,7 +13,9 @@ function userCommands() {
     runTweets();
   }
 
-  else if (liriCommands === "spotify-this-song"){}
+  else if (liriCommands === "spotify-this-song"){
+    runSong();
+  }
 
   else if (liriCommands === "movie-this") {}
 
@@ -26,8 +28,8 @@ function userCommands() {
  // Function that pulls tweets and displays when commanded
 function runTweets() {
  var userName = "LildickyTom";
- if (liriCommands) {
-   userName = liriCommands;
+ if (liriSearch) {
+   userName = liriSearch;
  }
  var Twitter = require('twitter');
 
@@ -47,35 +49,25 @@ client.get('statuses/user_timeline', params, function(error, tweets, response) {
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-// Taking commands
-function userCommands() {
-  if (liriCommands === "my-tweets"){
-    runTweets();
+function runSong() {
+  var song = 'The Sign';
+  if (searchTerm) {
+    song = liriSearch;
   }
+  var Spotify = require('node-spotify-api');
 
-  else if (liriCommands === "spotify-this-song"){}
+  var spotify = new Spotify({
+    id: keys.spotifyKeys.id,
+    secret: keys.spotifyKeys.secret
+  });
 
-  else if (liriCommands === "movie-this") {}
-
-  else {
-    error
-  }
-
-
-
-
-
+  spotify.search({ type: 'track', query: song }, function(err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
+    }
+})
 }
+
+
 
 userCommands();
