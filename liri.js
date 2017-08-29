@@ -17,7 +17,9 @@ function userCommands() {
     runSong();
   }
 
-  else if (liriCommands === "movie-this") {}
+  else if (liriCommands === "movie-this") {
+    runMovie();
+  }
 
   else {
     console.log("error")
@@ -51,7 +53,7 @@ client.get('statuses/user_timeline', params, function(error, tweets, response) {
 
 function runSong() {
   var song = 'The Sign';
-  if (searchTerm) {
+  if (liriSearch) {
     song = liriSearch;
   }
   var Spotify = require('node-spotify-api');
@@ -65,8 +67,32 @@ function runSong() {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
+    console.log(data);
 })
 }
+
+function runMovie() {
+  var movie = "Mr. Nobody";
+  if(liriSearch) {
+    movie = liriSearch;
+  }
+}
+
+var request = require("request");
+
+request("http://www.omdbapi.com/?apikey=" + keys.omdbKey.api + "&t", function(error, response, body) {
+  if (!error && response.statusCode === 200) {
+
+    // Parse the body of the site and recover just the imdbRating
+
+    console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
+  }
+  });
+
+
+
+
+
 
 
 
